@@ -20,7 +20,8 @@ app.get('/payrolls', (req, res) => {
                     net: payslip.net
                 }
             }));
-        });
+        })
+        .catch(() => res.sendStatus(500));
 });
 
 app.put('/payrolls', (req, res) => {
@@ -28,7 +29,9 @@ app.put('/payrolls', (req, res) => {
     const {irpf} = req.body;
     if (!month || !year || !irpf) res.sendStatus(400);
     else {
-        updateIrpf(month, year, irpf, payslipRepository);
+        updateIrpf(month, year, irpf, payslipRepository)
+            .then(() => res.sendStatus(204))
+            .catch(() => res.sendStatus(500));
     }
 })
 

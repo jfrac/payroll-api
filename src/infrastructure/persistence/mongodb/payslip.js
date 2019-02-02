@@ -8,26 +8,31 @@ mongoose.connect('mongodb://localhost:27017/payroll-api', {useNewUrlParser: true
 const disconnect = () => mongoose.disconnect();
 
 const payslipSchema = new mongoose.Schema({
-    id: String,
+    _id: String,
     vat: String,
-    date: Date,
+    date: {type: [Date], index: true},
     gross: Number,
     deductions: Number,
     amountDeductions: Number,
     irpf: Number,
     amountIrpf: Number,
     net: Number
-});
+}, { autoIndex: false });
 
 const MongoPayslip = mongoose.model('Payslip', payslipSchema);
 
 class PayslipRepository {
     constructor() {
         this.save.bind(this);
+        this.updateMany.bind(this);
     }
 
     fromPayslip(payslip) {
-        return MongoPayslip(payslip.toJSON());
+        const ObjectId = mongoose.Types.ObjectId;
+        const dbModel = MongoPayslip(
+            Object.assign({ _id: ObjectId(payslip.id)}, payslip.toJSON())
+        );
+        return dbModel;
     }
 
     findByMonthAndYear(month, year) {
@@ -56,14 +61,18 @@ class PayslipRepository {
     }
 
     updateMany(payslips) {
-        const mongoPayslips = payslips.map(payslip => new MongoPayslip(payslip.toJSON()))
-        MongoPayslip.collection.updateMany(mongoPayslips, function (err, docs) {
-            if (err) {
-                return console.error(err);
-            } else {
-                console.log('Multiple documents inserted to Collection');
-            }
-        });
+        return new Promise((resolve) => {
+            payslips.forEach(payslip => {
+                const mongoPayslip = this.fromPayslip(payslip);
+                MongoPayslip.update(
+                    {_id: payslip.id},
+                    mongoPayslip.toJSON(),
+                    null,
+                    console.log
+                );
+            });
+            resolve();
+        })
     }
 }
 
