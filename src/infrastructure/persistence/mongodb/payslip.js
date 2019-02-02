@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
+const {Payslip} = require('../../../model/Payslip');
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/payroll-api', {useNewUrlParser: true});
 
@@ -17,7 +19,7 @@ const payslipSchema = new mongoose.Schema({
     net: Number
 });
 
-const Payslip = mongoose.model('Payslip', payslipSchema);
+const MongoPayslip = mongoose.model('Payslip', payslipSchema);
 
 class PayslipRepository {
     constructor() {
@@ -25,16 +27,22 @@ class PayslipRepository {
     }
 
     fromPayslip(payslip) {
-        return Payslip(payslip.toJSON());
+        return MongoPayslip(payslip.toJSON());
     }
 
     findByMonthAndYear(month, year) {
         const from = moment([year, month - 1]);
         const to = moment([year, month - 1]).endOf('month');
-        return Payslip.find({'date': {     
+        return MongoPayslip.find({'date': {     
             $gte: from,     
             $lt : to
-        }});
+        }}).then(jsonPayslips => {
+            return new Promise((resolve) => {
+                resolve(jsonPayslips.map(jsonPayslip => {
+                    return new Payslip(jsonPayslip);
+                }))
+            })
+        });
     }
 
     save(payslip) {
@@ -48,8 +56,8 @@ class PayslipRepository {
     }
 
     updateMany(payslips) {
-        const jsonPayslips = payslips.map(payslip => payslip.toJSON())
-        Payslip.collection.updateMany(jsonPayslips, function (err, docs) {
+        const mongoPayslips = payslips.map(payslip => new MongoPayslip(payslip.toJSON()))
+        MongoPayslip.collection.updateMany(mongoPayslips, function (err, docs) {
             if (err) {
                 return console.error(err);
             } else {

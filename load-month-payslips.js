@@ -9,17 +9,7 @@ const year = curDate.getFullYear();
 
 loadPaylips(12, 2018).then(payslips => {
     payslips.map(jsonPayslip => {
-        var payslip = new Payslip(
-            jsonPayslip.id,
-            jsonPayslip.vat,
-            jsonPayslip.date,
-            jsonPayslip.gross,
-            jsonPayslip.deductions,
-            jsonPayslip.amountDeductions,
-            jsonPayslip.irpf,
-            jsonPayslip.amountIrpf,
-            jsonPayslip.net
-        );
+        var payslip = new Payslip(jsonPayslip);
         payslipRepository.save(payslip)
             .then(() => disconnect());
     })

@@ -10,6 +10,7 @@
   "author": "Juan Francisco Nicolás Gea",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "mongoose": "^5.4.8"

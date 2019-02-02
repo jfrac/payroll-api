@@ -1,9 +1,11 @@
-const updateIRPF = (month, year, newIrpf, payslipRepository) => {
-    const payslips = payslipRepository.findByMonthAndYear(month, year);
-    payslips.forEach(payslip => { payslip.changeIrpf(newIrpf); })
-    payslipRepository.updateMany(payslips);
+const updateIrpf = (month, year, newIrpf, payslipRepository) => {
+    payslipRepository.findByMonthAndYear(month, year)
+        .then(payslips => {
+            payslips.forEach(payslip => { payslip.changeIrpf(newIrpf); });
+            payslipRepository.updateMany(payslips);
+        });
 }
 
 module.exports = {
-    updateIRPF
+    updateIrpf
 }
