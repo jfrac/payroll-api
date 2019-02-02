@@ -62,16 +62,15 @@ class PayslipRepository {
 
     updateMany(payslips) {
         return new Promise((resolve) => {
-            payslips.forEach(payslip => {
+            MongoPayslip.bulkWrite(payslips.map((payslip => {
                 const mongoPayslip = this.fromPayslip(payslip);
-                MongoPayslip.update(
-                    {_id: payslip.id},
-                    mongoPayslip.toJSON(),
-                    null,
-                    console.log
-                );
-            });
-            resolve();
+                return {
+                    updateOne: {
+                      filter: { _id: mongoPayslip.id },
+                      update: mongoPayslip.toJSON()
+                    }
+                  }
+            }))).then(resolve)
         })
     }
 }
