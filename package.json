@@ -5,14 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha \"tests/**/*.js\""
   },
   "author": "Juan Francisco Nicolás Gea",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "mocha": "^5.2.0",
     "moment": "^2.24.0",
     "mongoose": "^5.4.8"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0"
   }
 }
