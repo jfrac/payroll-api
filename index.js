@@ -1,5 +1,4 @@
 const express = require('express')
-const {loadPaylips} = require('./src/payslip-loaders/payslip-gist-loader');
 const {updateIrpf} = require('./src/use-cases/update-irpf');
 const {PayslipRepository} = require('./src/infrastructure/persistence/mongodb/payslip');
 
@@ -10,9 +9,15 @@ const payslipRepository = new PayslipRepository();
 app.get('/payrolls', (req, res) => {
     const { month, year} = req.query;
     if (!month || !year) res.sendStatus(400);
-    loadPaylips(month, year).then(payslips => {
-        res.send(payslips)
-    })
+    else payslipRepository.findByMonthAndYear(month, year)
+        .then(payslips => {
+            res.send(payslips.map(payslip => {
+                return {
+                    vat: payslip.vat,
+                    net: payslip.net
+                }
+            }));
+        });
 });
 
 app.put('/payrolls', (req, res) => {

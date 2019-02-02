@@ -31,7 +31,7 @@ class Payslip {
         return {
             id: this.id,
             vat: this.vat,
-            date: this.date.getTime(),
+            date: this.date,
             gross: this.gross,
             deductions: this.deductions,
             amountDeductions: this.amountDeductions,

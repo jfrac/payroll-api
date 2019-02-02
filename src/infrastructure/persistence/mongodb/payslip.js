@@ -1,13 +1,14 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const moment = require('moment');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/payroll-api', {useNewUrlParser: true});
 
 const disconnect = () => mongoose.disconnect();
 
-var payslipSchema = new mongoose.Schema({
+const payslipSchema = new mongoose.Schema({
     id: String,
     vat: String,
-    date: {type: Date,},
+    date: Date,
     gross: Number,
     deductions: Number,
     amountDeductions: Number,
@@ -16,7 +17,7 @@ var payslipSchema = new mongoose.Schema({
     net: Number
 });
 
-var Payslip = mongoose.model('Payslip', payslipSchema);
+const Payslip = mongoose.model('Payslip', payslipSchema);
 
 class PayslipRepository {
     constructor() {
@@ -28,13 +29,12 @@ class PayslipRepository {
     }
 
     findByMonthAndYear(month, year) {
-        // find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
-        Payslip.findOne({ 'name.last': 'Ghost' }, 'name occupation', function (err, person) {
-            if (err) return handleError(err);
-            // Prints "Space Ghost is a talk show host".
-            console.log('%s %s is a %s.', person.name.first, person.name.last,
-            person.occupation);
-        });
+        const from = moment([year, month - 1]);
+        const to = moment([year, month - 1]).endOf('month');
+        return Payslip.find({'date': {     
+            $gte: from,     
+            $lt : to
+        }});
     }
 
     save(payslip) {
