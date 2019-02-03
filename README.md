@@ -11,7 +11,7 @@ Public API to report a list of payslips and allow to modify IRPF of them.
 
 `npm install`
 
-## Start API
+## Run API
 
 `npm start`
 
