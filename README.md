@@ -13,8 +13,14 @@ Payslips API test
 
 `npm start`
 
+
+
 ## Load monthly payslips
 
 In order to load one month into database, just run
 
 `node load-month-payslips 12 2018`
+
+## Run tests
+
+`npm t`
