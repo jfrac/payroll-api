@@ -28,7 +28,7 @@ class Payslip {
             amountDeductions: this.amountDeductions,
             irpf: this.irpf,
             amountIrpf: this.amountIrpf,
-            net: this.net.toFixed(2),
+            net: +(this.net.toFixed(2)),
         };
     }
 }
