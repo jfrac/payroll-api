@@ -1,6 +1,6 @@
-# Payslips API test
+# Payroll API test
 
-Public API to report a list of payslips and allow to modify IRPF of them. 
+Public API to report payrolls and allow to modify IRPF of them. 
 
 ## Prerequisites
 
@@ -9,9 +9,13 @@ Public API to report a list of payslips and allow to modify IRPF of them.
 
 ## Installation
 
+`git clone https://github.com/jfrac/payroll-api.git`
+
+`cd payroll`
+
 `npm install`
 
-## Start API
+## Run API
 
 `npm start`
 
