@@ -14,11 +14,11 @@ var loadPaylips = (month, year) => new Promise((resolve, reject) => {
   });
 });
 
-var parsePayslips = (gitsResult) => {
-  return gitsResult.split('\n').map(parsePaylip);
+var parsePayslips = (gistResult) => {
+  return gistResult.split('\n').map(parsePaylip);
 };
 
-var parsePaylip = (gitsLine) => {
+var parsePaylip = (gistLine) => {
   /*
      12 chars 👉 ID
      9 chars 👉 Vat
@@ -41,7 +41,7 @@ var parsePaylip = (gitsLine) => {
     irpf,
     amountIrpf,
     net,
-  ] = payslipRegex.exec(gitsLine);
+  ] = payslipRegex.exec(gistLine);
   return {
     id,
     vat,
