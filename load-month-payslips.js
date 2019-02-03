@@ -7,10 +7,11 @@ const curDate = new Date();
 const month = curDate.getMonth();
 const year = curDate.getFullYear();
 
-loadPaylips(12, 2018).then(payslips => {
-    payslips.map(jsonPayslip => {
-        var payslip = new Payslip(jsonPayslip);
-        payslipRepository.save(payslip)
-            .then(() => disconnect());
-    })
-});
+savePayslip = (jsonPayslip) => {
+    var payslip = new Payslip(jsonPayslip);
+    payslipRepository.save(payslip)
+        .then(disconnect)
+        .catch(disconnect);
+};
+
+loadPaylips(12, 2018).then(payslips => payslips.map(savePayslip));

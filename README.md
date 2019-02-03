@@ -15,8 +15,6 @@ Public API to report a list of payslips and allow to modify IRPF of them.
 
 `npm start`
 
-
-
 ## Load monthly payslips
 
 In order to load one month into database, just run
@@ -26,3 +24,27 @@ In order to load one month into database, just run
 ## Run tests
 
 `npm t`
+
+## Usage examples
+
+### Retrieve payrolls of Dec 2018
+
+```bash
+curl -X GET \
+  'http://localhost:3000/payrolls?month=12&year=2018' \
+  -H 'cache-control: no-cache'
+
+```
+
+### Modify IRPF payrolls of Dec 2018
+
+```bash
+curl -X PUT \
+  'http://localhost:3000/payrolls?month=12&year=2018' \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{
+	"irpf": 5
+}
+'
+```
