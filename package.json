@@ -1,7 +1,7 @@
 {
   "name": "payroll_api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Public API to report a list of payslips and allow to modify IRPF",
   "main": "index.js",
   "scripts": {
     "start": "node .",
