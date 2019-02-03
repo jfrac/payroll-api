@@ -10,7 +10,9 @@ Public API to report payrolls and allow to modify IRPF of them.
 ## Installation
 
 `git clone https://github.com/jfrac/payroll-api.git`
+
 `cd payroll`
+
 `npm install`
 
 ## Run API
