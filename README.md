@@ -2,7 +2,7 @@ Payslips API test
 
 ## Prerequisites
 
-- npm installed
+- Node.js and npm installed
 - MongoDB instance running in `localhost:27017`
 
 ## Installation
