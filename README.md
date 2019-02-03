@@ -1,4 +1,6 @@
-Payslips API test
+# Payslips API test
+
+Public API to report a list of payslips and allow to modify IRPF of them. 
 
 ## Prerequisites
 
