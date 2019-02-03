@@ -1,19 +1,19 @@
 Payslips API test
 
-# Prerequisites
+## Prerequisites
 
 - npm installed
 - MongoDB instance running in `localhost:27017`
 
-# Installation
+## Installation
 
 `npm install`
 
-# Start API
+## Start API
 
 `npm start`
 
-# Load monthly payslips
+## Load monthly payslips
 
 In order to load one month into database, just run
 
