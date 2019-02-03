@@ -8,6 +8,10 @@ var loadPaylips = (month, year) => new Promise((resolve, reject) => {
   var uri = URL_BASE + fileName;
   var data = '';
   https.get(uri, response => {
+    if (response.statusCode !== 200) {
+      console.error('Gist payslip status code: ' + response.statusCode);
+      process.exit(1);
+    }
     response.on('data', d => data += d);
     response.on('end', () => resolve(parsePayslips(data)));
     response.on('error', d => console.log);

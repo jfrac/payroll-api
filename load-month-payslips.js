@@ -4,14 +4,22 @@ const {PayslipRepository, disconnect} = require('./src/infrastructure/persistenc
 
 const payslipRepository = new PayslipRepository();
 const curDate = new Date();
-const month = curDate.getMonth();
-const year = curDate.getFullYear();
+let month = curDate.getMonth();
+let year = curDate.getFullYear();
+
+if (parseInt(process.argv[2]) && parseInt(process.argv[3])) {
+    month = process.argv[2];
+    year = process.argv[3];
+}
 
 savePayslip = (jsonPayslip) => {
     var payslip = new Payslip(jsonPayslip);
     payslipRepository.save(payslip)
         .then(disconnect)
-        .catch(disconnect);
+        .catch(err => {
+            console.error(err);
+            disconnect();
+        });
 };
 
-loadPaylips(12, 2018).then(payslips => payslips.map(savePayslip));
+loadPaylips(month, year).then(payslips => payslips.map(savePayslip));
