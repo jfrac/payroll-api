@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {updateIrpf} = require('./src/use-cases/update-irpf');
 const {showPayroll} = require('./src/use-cases/show-payroll');
+const {IrfpNegativeError} = require('./src/model/Payslip');
 const {PayslipRepository} = require('./src/infrastructure/persistence/mongodb/payslip');
 
 const app = express()
@@ -24,7 +25,11 @@ app.put('/payrolls', (req, res) => {
     else {
         updateIrpf(month, year, irpf, payslipRepository)
             .then(() => res.sendStatus(204))
-            .catch(() => res.sendStatus(500));
+            .catch(err => {
+                console.log(err);
+                if (err instanceof IrfpNegativeError) res.sendStatus(400);
+                else res.sendStatus(500)
+            });
     }
 })
 

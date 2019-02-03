@@ -12,7 +12,8 @@ class Payslip {
     }
 
     changeIrpf(newIrpf) {
-        this.irpf = newIrpf;
+        this.irpf = parseFloat(newIrpf);
+        if (this.irpf < 0) throw new IrfpNegativeError();
         this.amountIrpf = this.gross * (this.irpf / 100)
         this.net = this.gross - this.amountIrpf - this.amountDeductions;
     }
@@ -32,6 +33,16 @@ class Payslip {
     }
 }
 
+class IrfpNegativeError {
+    constructor(message = 'IRPF must be positive', extra) {
+        Error.captureStackTrace(this, this.constructor);
+        this.name = this.constructor.name;
+        this.message = message;
+        this.extra = extra;
+    }
+}
+
 module.exports = {
-    Payslip
+    Payslip,
+    IrfpNegativeError
 }
