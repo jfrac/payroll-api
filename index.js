@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const {updateIrpf} = require('./src/use-cases/update-irpf');
+const {showPayroll} = require('./src/use-cases/show-payroll');
 const {PayslipRepository} = require('./src/infrastructure/persistence/mongodb/payslip');
 
 const app = express()
@@ -11,17 +12,9 @@ const payslipRepository = new PayslipRepository();
 app.get('/payrolls', (req, res) => {
     const { month, year} = req.query;
     if (!month || !year) res.sendStatus(400);
-    else payslipRepository.findByMonthAndYear(month, year)
-        .then(payslips => {
-            res.send(payslips.map(payslip => {
-                return {
-                    vat: payslip.vat,
-                    irpf: payslip.irpf,
-                    net: payslip.net
-                }
-            }));
-        })
-        .catch(() => res.sendStatus(500));
+    else showPayroll(month, year, payslipRepository)
+        .then((payroll) => { res.send(payroll); })
+        .catch(() => res.sendStatus(500))
 });
 
 app.put('/payrolls', (req, res) => {
